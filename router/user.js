@@ -2,6 +2,9 @@ const Router = require('koa-router')
 const notion = require('../notion')
 const Util = require('../util')
 const Status = require('../status')
+const Auth = require('../middleware')
+const jwt = require('jsonwebtoken')
+require('dotenv').config()
 
 const router = new Router({
   prefix: '/user'
@@ -28,6 +31,23 @@ router.post('/', async (ctx) => {
     status,
     message,
     token,
+  }
+})
+
+router.get('/', Auth.useToken, async (ctx) => {
+  const { uid } = jwt.verify(ctx.request.headers.authorization.replace('Bearer ', ''), process.env.TOKEN_SECRET_KEY)
+
+  const { nikename, avatar } = await notion.getUserInfo(uid)
+
+  ctx.body = {
+    status: Status.SUCCESS,
+    message: Status.getCodeMsg(Status.SUCCESS),
+    data: {
+      userInfo: {
+        nikename,
+        avatar,
+      },
+    },
   }
 })
 

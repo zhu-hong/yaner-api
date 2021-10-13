@@ -28,6 +28,12 @@ class Notion {
 
     return users
   }
+
+  async getUserInfo(id){
+    const cuser = (await this.getUsers()).find(item => item.id === id)
+    
+    return Promise.resolve(cuser)
+  }
 }
 
 module.exports = new Notion(process.env.NOTION_TOKEN)
