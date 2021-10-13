@@ -34,6 +34,29 @@ class Notion {
 
     return Promise.resolve(cuser)
   }
+
+  async getBills() {
+    const billPage = await this.client.databases.query({ database_id: process.env.NOTION_BILL })
+
+    return Promise.resolve(this.transformBillPage(billPage))
+  }
+
+  transformBillPage(billPage) {
+    const bills = []
+
+    billPage.results.forEach(({ properties }) => {
+      const bill = {}
+
+      bill.amount = properties.amount.number
+      bill.inout = properties.inout.number
+      bill.date = properties.date.date.start
+      bill.tip = properties.tip.rich_text[0].text.content
+
+      bills.push(bill)
+    })
+
+    return bills
+  }
 }
 
 module.exports = new Notion(process.env.NOTION_TOKEN)
