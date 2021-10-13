@@ -17,4 +17,15 @@ router.get('/', Auth.useToken, async (ctx) => {
   }
 })
 
+router.post('/', Auth.useToken, async (ctx) => {
+  const bill = ctx.request.body;
+
+  await notion.postBill(bill)
+
+  ctx.body = {
+    status: Status.SUCCESS,
+    message: Status.getCodeMsg(Status.SUCCESS),
+  }
+})
+
 module.exports = router

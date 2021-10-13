@@ -57,6 +57,47 @@ class Notion {
 
     return bills
   }
+
+  async postBill({ amount, inout, date, tip }) {
+    await this.client.request({
+      method: 'post',
+      path: 'pages',
+      body: {
+        parent: { database_id: process.env.NOTION_BILL },
+        properties: {
+          id: {
+            title: [
+              {
+                text: {
+                  content: (await this.getBills()).length.toString(),
+                },
+              },
+            ],
+          },
+          amount: {
+            number: parseFloat(amount),
+          },
+          inout: {
+            number: parseFloat(inout),
+          },
+          date: {
+            date: {
+              start: date,
+            },
+          },
+          tip: {
+            rich_text: [
+              {
+                text: {
+                  content: tip,
+                },
+              },
+            ],
+          },
+        },
+      },
+    })
+  }
 }
 
 module.exports = new Notion(process.env.NOTION_TOKEN)
