@@ -26,6 +26,19 @@ class Auth {
       return
     }
   }
+
+  static async useScope(ctx, next) {
+    const { scope } = jwt.verify(ctx.request.headers.authorization.replace('Bearer ', ''), process.env.TOKEN_SECRET_KEY)
+    if (!scope >= process.env.ADMIN_SCOPE) {
+      ctx.body = {
+        status: Status.ERROR_ACCOUNT_SCOPELESS,
+        message: Status.getCodeMsg(Status.ERROR_ACCOUNT_SCOPELESS),
+      }
+      return
+    }
+
+    await next()
+  }
 }
 
 module.exports = Auth

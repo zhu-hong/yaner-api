@@ -17,7 +17,7 @@ router.get('/', Auth.useToken, async (ctx) => {
   }
 })
 
-router.post('/', Auth.useToken, async (ctx) => {
+router.post('/', Auth.useToken, Auth.useScope, async (ctx) => {
   const bill = ctx.request.body;
 
   await notion.postBill(bill)
