@@ -1,0 +1,16 @@
+{
+  "name": "yaner-api",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "ISC",
+  "scripts": {
+    "start": "nodemon ./index.js"
+  },
+  "author": "zhu-hong",
+  "devDependencies": {
+    "nodemon": "^2.0.13"
+  },
+  "dependencies": {
+    "koa": "^2.13.3"
+  }
+}
