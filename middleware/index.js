@@ -18,7 +18,7 @@ class Auth {
         }
         return
       }
-  
+
       ctx.body = {
         status: Status.ERROR_TOKEN_TIMEOUT,
         message: Status.getCodeMsg(Status.ERROR_TOKEN_TIMEOUT)

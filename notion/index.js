@@ -29,9 +29,9 @@ class Notion {
     return users
   }
 
-  async getUserInfo(id){
+  async getUserInfo(id) {
     const cuser = (await this.getUsers()).find(item => item.id === id)
-    
+
     return Promise.resolve(cuser)
   }
 }
