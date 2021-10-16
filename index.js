@@ -7,4 +7,5 @@ const app = new Koa()
 app
   .use(bodyParser())
   .use(router.routes())
-  .listen(8080)
+
+module.exports = app
