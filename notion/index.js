@@ -53,7 +53,7 @@ class Notion {
       bill.date = properties.date.date.start
       bill.tip = properties.tip.rich_text[0].text.content
 
-      bills.unshift(bill)
+      bills.push(bill)
     })
 
     return bills
@@ -61,7 +61,7 @@ class Notion {
 
   async postBill({ amount, inout, date, tip }) {
     const bills = await this.getBills()
-    const next = bills[bills.length - 1].bid + 1
+    const next = bills[0].bid + 1
     await this.client.request({
       method: 'post',
       path: 'pages',
