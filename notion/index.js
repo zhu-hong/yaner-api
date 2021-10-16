@@ -47,32 +47,38 @@ class Notion {
     billPage.results.forEach(({ properties }) => {
       const bill = {}
 
+      bill.bid = properties.bid.number
       bill.amount = properties.amount.number
       bill.inout = properties.inout.number
       bill.date = properties.date.date.start
       bill.tip = properties.tip.rich_text[0].text.content
 
-      bills.push(bill)
+      bills.unshift(bill)
     })
 
     return bills
   }
 
   async postBill({ amount, inout, date, tip }) {
+    const bills = await this.getBills()
+    const next = bills[bills.length - 1].bid + 1
     await this.client.request({
       method: 'post',
       path: 'pages',
       body: {
         parent: { database_id: process.env.NOTION_BILL },
         properties: {
-          id: {
+          title: {
             title: [
               {
                 text: {
-                  content: (await this.getBills()).length.toString(),
+                  content: next.toString(),
                 },
               },
             ],
+          },
+          bid: {
+            number: next,
           },
           amount: {
             number: parseFloat(amount),
